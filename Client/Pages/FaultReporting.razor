@@ -1,0 +1,67 @@
+﻿@page "/fault"
+@attribute [Authorize]
+
+<h2>Report a fault</h2>
+
+@if (reported)
+{
+    <h3>Your fault has been reported and soon will be analysed by our team.</h3>
+}
+else
+{
+    <EditForm Model="fault" OnValidSubmit="OnSubmitFault">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <InputText id="email" @bind-Value="fault.Email" class="form-control"></InputText>
+            <ValidationMessage For="@(() => fault.Email)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="username" class="required">Login</label>
+            <InputText id="username" @bind-Value="fault.Username" class="form-control"></InputText>
+            <ValidationMessage For="@(() => fault.Username)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="description" class="required">Description of the fault</label>
+            <InputTextArea id="description" @bind-Value="fault.Description" class="form-control"></InputTextArea>
+            <ValidationMessage For="@(() => fault.Description)"></ValidationMessage>
+
+        </div>
+        <div class="form-group">
+            <label for="amount" class="required">How many times did the fault occur? </label>
+            <InputNumber id="amount" @bind-Value="fault.Priority" class="form-control"></InputNumber>
+            <ValidationMessage For="@(() => fault.Priority)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="dateOfFault">When did the fault occur?</label>
+            <InputDate id="dateOfFault" @bind-Value="fault.DateOfFault" class="form-control"></InputDate>
+        </div>
+        <div class="form-group">
+                <label for="type">What was a type of the fault?</label>
+                <InputSelect id="gender" @bind-Value="fault.Type" class="form-control">
+                    @for (int i = 0; i < TypeList.Count; i++)
+                        {
+                        <option value="@i">@TypeList[i]</option>
+                        }
+                </InputSelect>
+            </div>
+
+        <div class="form-group form-check">
+            <InputCheckbox id="confirmation" @bind-Value="fault.Confirmation" class="form-check-input"></InputCheckbox>
+            <label for="confirmation" class="form-check-label">I am 18 years old or more.</label>
+            <ValidationMessage For="@(() => fault.Confirmation)"></ValidationMessage>
+        </div>
+        <button type="submit" class="btn btn-success">I report!</button>
+   </EditForm>
+}
+
+
+@code {
+    private readonly IReadOnlyList<string> TypeList = new List<string>() { "Hardware", "Software", "Other" };
+    private Fault fault = new Fault();
+    private bool reported = false;
+    private void OnSubmitFault()
+    {
+        reported = true;
+    }
+}

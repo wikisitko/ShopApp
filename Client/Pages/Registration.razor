@@ -1,0 +1,107 @@
+﻿@page "/registration"
+@inject IJSRuntime JS
+@inject NavigationManager NavigationManager
+@inject IAuthService AuthService
+@inject IToastService ToastService
+
+
+@if (registrated)
+{
+    @*<h1>Your account has been created, @user.Username</h1>*@
+    @*<Login></Login>*@
+}
+else
+{
+    <h3>Registration</h3>
+    <EditForm Model="user" OnValidSubmit="OnSubmitRegistration">
+        <DataAnnotationsValidator></DataAnnotationsValidator>
+        <div class="form-group">
+            <label for="email" class="required">Email</label>
+            <InputText id="email" @bind-Value="user.Email" class="form-control"></InputText>
+            <ValidationMessage For="@(() => user.Email)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="username" class="required">Login</label>
+            <InputText id="username" @bind-Value="user.Username" class="form-control"></InputText>
+            <ValidationMessage For="@(() => user.Username)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="password" class="required">Password</label>
+            <InputText id="password" @bind-Value="user.Password" type="password" class="form-control"></InputText>
+            <ValidationMessage For="@(() => user.Password)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword" class="required">Confirm Password</label>
+            <InputText id="confirmPassword" @bind-Value="user.PasswordConfirm" type="password" class="form-control"></InputText>
+            <ValidationMessage For="@(() => user.PasswordConfirm)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <InputTextArea id="description" @bind-Value="user.Description" class="form-control"></InputTextArea>
+        </div>
+        <div class="form-group">
+            <label for="money">Money</label>
+            <InputNumber id="money" @bind-Value="user.Money" class="form-control"></InputNumber>
+            <ValidationMessage For="@(() => user.Money)"></ValidationMessage>
+        </div>
+        <div class="form-group">
+            <label for="dateOfBirth">Date of birth</label>
+            <InputDate id="dateOfBirth" @bind-Value="user.DateOfBirth" class="form-control"></InputDate>
+        </div>
+        @*<div class="form-group">
+                <label for="gender">Gender</label>
+                <InputSelect id="gender" @bind-Value="user.Gender" class="form-control">
+                    @for (int i = 0; i < GenderList.Count; i++)
+                        {
+                        <option value="@i">@GenderList[i]</option>
+                        }
+                </InputSelect>
+            </div>*@
+        <div class="form-group">
+            <label for="gender">Gender</label><br />
+            <InputRadioGroup id="gender" @bind-Value="user.Gender" class="form-control">
+                @for (int i = 0; i < GenderList.Count; i++)
+                    {
+                    <InputRadio Value="@i" />
+                    <span style="padding-left: 5px;">@GenderList[i]</span><br />
+                    }
+            </InputRadioGroup>
+        </div>
+        <div class="form-check">
+            <label for="confirmation" class="form-check-label">Potwierdzam regulamin</label>
+            <InputCheckbox id="confirmation" @bind-Value="user.Confirmation" class="form-check-input"></InputCheckbox>
+            <ValidationMessage For="@(() => user.Confirmation)"></ValidationMessage>
+        </div>
+        <button type="submit" class="btn btn-success">Go!</button>
+        @*<ValidationSummary></ValidationSummary>*@
+    </EditForm>
+
+}
+
+@code {
+    private readonly IReadOnlyList<string> GenderList = new List<string>() { "Male", "Female", "Idk" };
+    private UserRegistration user = new UserRegistration(); //czy tutaj tez moze byc user skoro w Login.razor tez jest user?
+    private bool registrated = false;
+
+    private async void OnSubmitRegistration() //czemu to sie tak nazywa:-(
+    {
+        var result = await AuthService.Register(user);
+        if(result.Success)
+        {
+            //Toast.ShowSuccess("Registrated!", "Success!");
+            registrated = true;
+            NavigationManager.NavigateTo("login");
+        }
+        else
+        {
+            ToastService.ShowError(result.Message);
+        }
+
+        //Console.WriteLine(user);
+        await JS.InvokeVoidAsync("console.log", user); //to wywola w JS takie cos: console.log(user);
+
+        //Przenosi uzytkownika do strony logowania
+
+
+    }
+}

@@ -1,0 +1,10 @@
+﻿@page "/login"
+
+<AuthorizeView>
+    <Authorized>
+        <Index />
+    </Authorized>
+    <NotAuthorized>
+        <LoginForm></LoginForm>
+    </NotAuthorized>
+</AuthorizeView>

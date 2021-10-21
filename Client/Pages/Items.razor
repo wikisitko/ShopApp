@@ -1,0 +1,57 @@
+﻿@page "/items"
+@inject IWalletService Wallet
+@inject IShopService Shop
+@inject IToastService Toast
+@attribute [Authorize]
+
+
+<h3>Items</h3>
+<WalletStatus Message="Twój stan konta to:"></WalletStatus>
+
+@if (Shop.Items.Count == 0)
+{
+    <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Shop.Items)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td><button class="btn btn-success" @onclick="() => Kup(item)">Buy</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+
+
+@code {
+    private void Kup(Item item)
+    {
+        Shop.AddItemToBasket(item);
+        Toast.ShowSuccess($"Dodano {item.Name}");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Shop.LoadItemsAsync();
+        await Wallet.LoadMoney();
+        StateHasChanged();
+    }
+}

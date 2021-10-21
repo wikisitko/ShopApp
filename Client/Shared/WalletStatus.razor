@@ -1,0 +1,21 @@
+﻿@inject IWalletService Wallet
+@implements IDisposable
+
+
+<h5>@Message @Wallet.Money</h5>
+
+@code {   
+    [Parameter]
+    public string Message { get; set; }
+
+    protected override void OnInitialized() //funkcja ktora uruchamia sie w momencie kiedy komponent jest gotowy do uzycia
+    {
+        Wallet.OnBalanceChanged += StateHasChanged; //w momencie jak wywola sie event zwizany ze zmiana stanu gotowki to uruchomi sie funkcja ktora odswiezy ten komponent
+        base.OnInitialized();
+    }
+
+    public void Dispose() //ta funkcja uruchomi sie w momencie jak GarbageCollector zacznie usuwac ten komponent
+    {
+        Wallet.OnBalanceChanged -= StateHasChanged; //usuwa event z uslugi w momencie jak ten komponent jest kasowany z pamieci
+    }
+}

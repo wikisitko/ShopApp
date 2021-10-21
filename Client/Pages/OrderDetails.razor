@@ -1,0 +1,73 @@
+﻿@page "/order/{OrderId:int}"
+@inject IShopService ShopService
+@attribute [Authorize]
+
+<h3>OrderDetails</h3>
+
+@if (order == null)
+{
+    <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else
+{
+    <ul>
+        <li>Imie: @order.Name</li>
+        <li>Nazwisko: @order.Surname</li>
+        <li>Data zamówienia: @order.Date</li>
+    </ul>
+}
+
+@if (items == null)
+{
+    <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Count</th>
+                <th scope="col">Price per one</th>
+                <th scope="col">Price total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
+                <tr>
+                    <td>@item.Item.Name</td>
+                    <td>@item.Count</td>
+                    <td>@item.PricePerEach</td>
+                    <td>@(item.PricePerEach * item.Count)</td>
+                </tr>
+            }
+
+            <tr>
+                <td></td>
+                <td></td>
+                <td>Total:</td>
+                <td>@items.Sum(x => x.PricePerEach * x.Count)</td>
+            </tr>
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int OrderId { get; set; }
+    private List<OrderItem> items { get; set; }
+    private OrderResult order;
+
+    protected async override void OnInitialized()
+    {
+        order = ShopService.Orders.FirstOrDefault(x => x.Id == OrderId);
+        StateHasChanged();
+        items = await ShopService.GetOrderedItems(order.Id);
+        StateHasChanged();
+    }
+}

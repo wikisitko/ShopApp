@@ -1,0 +1,71 @@
+﻿@page "/basket"
+@inject IShopService Shop
+@inject NavigationManager NavigationManager
+@attribute [Authorize]
+@*Blokuje dostep dla niezalogowanych do tego komponentu trzeba zrobic import:
+    @using Microsoft.AspNetCore.Authorization
+*@
+
+<h3>Basket</h3>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Count</th>
+            <th scope="col">Price per one</th>
+            <th scope="col">Price total</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Shop.OrderItems)
+        {
+            <tr>
+                <td>@item.Item.Name</td>
+                <td>@item.Count</td>
+                <td>@item.PricePerEach</td>
+                <td>@(item.PricePerEach * item.Count)</td>
+                <td><button class="btn btn-danger" @onclick="() => Shop.OrderItems.Remove(item)">Delete</button></td>
+            </tr>
+        }
+
+        <tr>
+            <td></td>
+            <td></td>
+            <td>Total:</td>
+            <td>@Shop.OrderItems.Sum(x => x.PricePerEach * x.Count)</td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+<EditForm Model="orderForm" OnValidSubmit="OrderSubmit">
+    <DataAnnotationsValidator></DataAnnotationsValidator>
+    <div class="form-group">
+        <label for="name" class="required">Name</label>
+        <InputText id="name" @bind-Value="orderForm.Name" class="form-control"></InputText>
+        <ValidationMessage For="@(() => orderForm.Name)"></ValidationMessage>
+    </div>
+    <div class="form-group">
+        <label for="surname" class="required">Surname</label>
+        <InputText id="surname" @bind-Value="orderForm.Surname" class="form-control"></InputText>
+        <ValidationMessage For="@(() => orderForm.Surname)"></ValidationMessage>
+    </div>
+    <div class="form-group">
+        <label for="address" class="required">Address</label>
+        <InputText id="address" @bind-Value="orderForm.Address" class="form-control"></InputText>
+        <ValidationMessage For="@(() => orderForm.Address)"></ValidationMessage>
+    </div>
+    <button class="btn btn-success" type="submit">Order now!</button>
+</EditForm>
+
+@code {
+    private OrderForm orderForm = new OrderForm();
+
+    private async Task OrderSubmit()
+        {
+        await Shop.SendOrder(orderForm);
+        StateHasChanged();
+        }
+}

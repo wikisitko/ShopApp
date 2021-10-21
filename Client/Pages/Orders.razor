@@ -1,0 +1,44 @@
+﻿@page "/orders"
+@attribute [Authorize]
+@inject IShopService Shop
+@inject NavigationManager NavigationManager
+
+<h3>Orders</h3>
+
+@if (Shop.Orders == null)
+{
+    <div class="spinner-border text-success" role="status">
+        <span class="visually-hidden"></span>
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Price total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Shop.Orders)
+            {
+                <tr>
+                    <td>@item.Date</td>
+                    <td>@item.PriceTotal</td>
+                    <td><button class="btn btn-success" @onclick='() => NavigationManager.NavigateTo($"/order/{item.Id}")'>Details</button></td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+
+
+@code {
+    protected async override void OnInitialized()
+    {
+        await Shop.LoadOrdersAsync();
+        StateHasChanged();
+    }
+}
