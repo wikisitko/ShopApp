@@ -1,17 +1,33 @@
 ﻿@inherits LayoutComponentBase
 @using Blazored.Toast.Configuration
+@inject IWalletService Wallet
+@inject IShopService Shop
+@inject IToastService Toast
 
 <div class="page">
     <div class="sidebar-new">
         <NavMenu />
     </div>
 
-   
+
     <div class="main">
+        <div class="top-row px-4">
+            <WalletStatus Message="Your bank balance is"></WalletStatus>
+        </div>
         <div class="content px-4">
             @Body
         </div>
     </div>
 </div>
 
-<BlazoredToasts Position="ToastPosition.TopLeft"/>
+<BlazoredToasts Position="ToastPosition.TopLeft" />
+
+@*@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await Shop.LoadItemsAsync();
+        await Wallet.LoadMoney();
+        StateHasChanged();
+    }
+}*@

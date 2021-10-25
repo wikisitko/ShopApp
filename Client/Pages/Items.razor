@@ -5,8 +5,8 @@
 @attribute [Authorize]
 
 
-<h3>Items</h3>
-<WalletStatus Message="Twój stan konta to:"></WalletStatus>
+<h3>Shop now!</h3>
+
 
 @if (Shop.Items.Count == 0)
 {
@@ -16,25 +16,63 @@
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Shop.Items)
-            {
+    @*<table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Price</td>
-                    <td><button class="btn btn-success" @onclick="() => Kup(item)">Buy</button></td>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Actions</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Shop.Items)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Price</td>
+                        <td><button class="btn btn-success" @onclick="() => Kup(item)">Buy</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+
+<div class="container">
+    @for (int i = 0; i < Shop.Items.Count; i += 3)
+    {
+    <div class="row">
+        @for (int j = 0; j < 3; j++)
+        {
+        <div class="col">
+            @if (i + j < Shop.Items.Count)
+            {
+                Item item = Shop.Items[i + j];
+                string url;
+                @if (item.ImageName == null)
+                {
+                    url = "https://via.placeholder.com/150/0000FF/808080?text=" + item.Name;
+                }
+                else
+                {
+                    url = "/img/" + item.ImageName;
+                }
+
+            <div class="card" style="width: 90%">
+                <img src="@url" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">@item.Price zł</p>
+                    <button @onclick="() => Kup(item)" class="btn btn-success">Buy</button>
+                </div>
+                <br />
+                <br />
+            </div>
             }
-        </tbody>
-    </table>
+
+        </div>
+        }
+    </div>
+     }
+    </div>
 
 }
 

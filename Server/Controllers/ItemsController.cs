@@ -52,7 +52,7 @@ namespace BlazorShoppingApp.Server.Controllers
             }
 
             dbItem.Name = item.Name;
-            dbItem.Brand = item.Brand;
+            dbItem.ImageName = item.ImageName;
             dbItem.Price = item.Price;
             await dataContext.SaveChangesAsync();
             var list = await dataContext.Items.ToListAsync();
