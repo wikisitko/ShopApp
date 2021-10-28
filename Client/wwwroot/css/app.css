@@ -1,8 +1,8 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html, body {
+/*html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
+}*/
 
 a, .btn-link {
     color: black;
@@ -48,3 +48,12 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.main-strip {
+    background-color: rgba(80, 209, 0, 0.25);
+    justify-content: flex-end;
+    width: 100%;
+    display: flex;
+    position: sticky;
+    align-items: center;
+}

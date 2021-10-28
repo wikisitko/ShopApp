@@ -37,10 +37,10 @@ else
         </table>*@
 
 <div class="container">
-    @for (int i = 0; i < Shop.Items.Count; i += 3)
+    @for (int i = 0; i < Shop.Items.Count; i += 4)
     {
     <div class="row">
-        @for (int j = 0; j < 3; j++)
+        @for (int j = 0; j < 4; j++)
         {
         <div class="col">
             @if (i + j < Shop.Items.Count)
@@ -56,7 +56,7 @@ else
                     url = "/img/" + item.ImageName;
                 }
 
-            <div class="card" style="width: 90%">
+            <div class="card" style="width: 100%">
                 <img src="@url" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>

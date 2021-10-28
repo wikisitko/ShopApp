@@ -110,6 +110,14 @@ namespace BlazorShoppingApp.Server.Controllers
                 return NotFound("Item not found");
             }
 
+            int totalPrice = await CountPrice(request.Items);
+            if(totalPrice > user.Money)
+            {
+                return BadRequest("No money");
+            }
+
+            user.Money -= totalPrice;
+
             var order = new Order
             {
                 Name = request.OrderForm.Name,
@@ -145,6 +153,17 @@ namespace BlazorShoppingApp.Server.Controllers
                 }
             }
             return true;
+        }
+
+        private async Task<int> CountPrice(Dictionary<int, int> items)
+        {
+            int total = 0;
+            foreach (var item in items)
+            {
+                var itemObj = await dataContext.Items.FirstOrDefaultAsync(x => x.Id == item.Key);
+                total += itemObj.Price * item.Value;
+            }
+            return total;
         }
 
         private async Task<User> GetUser()

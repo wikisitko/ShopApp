@@ -1,5 +1,6 @@
 ﻿@page "/basket"
 @inject IShopService Shop
+@inject IWalletService Wallet
 @inject NavigationManager NavigationManager
 @attribute [Authorize]
 @*Blokuje dostep dla niezalogowanych do tego komponentu trzeba zrobic import:
@@ -66,6 +67,7 @@
     private async Task OrderSubmit()
         {
         await Shop.SendOrder(orderForm);
+        await Wallet.LoadMoney();
         StateHasChanged();
         }
 }

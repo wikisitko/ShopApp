@@ -55,7 +55,7 @@ namespace BlazorShoppingApp.Client.Services //Client???
             catch(Exception)
             {
                 Console.WriteLine("Blad ladowania pieniedzy!");
-                money = 5000;
+                money = 0;
             }
             OnBalanceChanged?.Invoke();
         }
