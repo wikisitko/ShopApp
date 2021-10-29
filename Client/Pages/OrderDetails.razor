@@ -12,11 +12,22 @@
 }
 else
 {
+    <!--<div class="card" style="width: 18rem;">
+        <img src="/img/zielistka.jpg" class="card-img-left" alt="...">
+        <div class="card-body">
+            <p class="card-text">
+                <h1>@order.Name</h1>--> @*do poprawy xD*@
+                <!--Imie: @order.Name <br />
+                Nazwisko: @order.Surname <br />
+                Data zamówienia: @order.Date.ToShortDateString() <br />
+            </p>
+        </div>
+    </div>-->
     <ul>
-        <li>Imie: @order.Name</li>
-        <li>Nazwisko: @order.Surname</li>
-        <li>Data zamówienia: @order.Date</li>
-    </ul>
+            <li>Imie: @order.Name</li>
+            <li>Nazwisko: @order.Surname</li>
+            <li>Data zamówienia: @order.Date</li>
+        </ul>
 }
 
 @if (items == null)

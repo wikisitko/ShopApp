@@ -108,7 +108,7 @@ namespace BlazorShoppingApp.Server.Data
             var keyStr = configuration.GetSection("AppSettings:Token").Value;
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(keyStr));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
-            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds, expires: DateTime.Now.AddDays(1));
+            var token = new JwtSecurityToken(claims: claims, signingCredentials: creds, expires: DateTime.Now.AddSeconds(15));
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
     }

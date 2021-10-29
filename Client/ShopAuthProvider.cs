@@ -16,14 +16,12 @@ namespace BlazorShoppingApp.Client
     {
         private readonly ILocalStorageService localStorage;
         private readonly HttpClient httpClient;
-        private readonly IShopService shopService;
         private readonly IWalletService wallet;
 
-        public ShopAuthProvider(ILocalStorageService localStorage, HttpClient httpClient, IShopService shopService, IWalletService wallet)
+        public ShopAuthProvider(ILocalStorageService localStorage, HttpClient httpClient, IWalletService wallet)
         {
             this.localStorage = localStorage;
             this.httpClient = httpClient;
-            this.shopService = shopService;
             this.wallet = wallet;
         }
 
@@ -39,8 +37,17 @@ namespace BlazorShoppingApp.Client
                 try
                 {
                     identity = new ClaimsIdentity(ParseClaimsFormJwt(token), "jwt");
+                    var expire = long.Parse(identity.FindFirst("exp").Value);
+
+                    DateTime exp = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc).AddSeconds(expire).ToLocalTime();
+
+                    Console.WriteLine(exp);
+                    Console.WriteLine(DateTime.Now);
+                    if(exp < DateTime.Now)
+                    {
+                        throw new Exception();
+                    }
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                    
                 }
                catch(Exception)
                 {
