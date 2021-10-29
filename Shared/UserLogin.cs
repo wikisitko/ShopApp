@@ -9,7 +9,7 @@ namespace BlazorShoppingApp.Shared
 {
     public class UserLogin
     {
-        [Required(ErrorMessage = "Proszę podaj email")]
+        [Required(ErrorMessage = "Podaj email")]
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }

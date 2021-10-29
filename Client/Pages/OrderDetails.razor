@@ -2,7 +2,8 @@
 @inject IShopService ShopService
 @attribute [Authorize]
 
-<h3>OrderDetails</h3>
+<h3>Szczegóły zamówienia</h3>
+
 
 @if (order == null)
 {
@@ -12,23 +13,12 @@
 }
 else
 {
-    <!--<div class="card" style="width: 18rem;">
-        <img src="/img/zielistka.jpg" class="card-img-left" alt="...">
-        <div class="card-body">
-            <p class="card-text">
-                <h1>@order.Name</h1>--> @*do poprawy xD*@
-                <!--Imie: @order.Name <br />
-                Nazwisko: @order.Surname <br />
-                Data zamówienia: @order.Date.ToShortDateString() <br />
-            </p>
-        </div>
-    </div>-->
-    <ul>
-            <li>Imie: @order.Name</li>
-            <li>Nazwisko: @order.Surname</li>
-            <li>Data zamówienia: @order.Date</li>
-        </ul>
-}
+    <br/>
+    <h5>Imie: @order.Name</h5>
+    <h5>Nazwisko: @order.Surname</h5>
+    <h5>Data zamówienia: @order.Date.ToShortDateString()</h5>
+
+            }
 
 @if (items == null)
 {
@@ -38,22 +28,23 @@ else
 }
 else
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Count</th>
-                <th scope="col">Price per one</th>
-                <th scope="col">Price total</th>
-            </tr>
-        </thead>
+    <table class="table table-sm">
+        @*<thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Count</th>
+                    <th scope="col">Price per one</th>
+                    <th scope="col">Price total</th>
+                </tr>
+            </thead>*@
         <tbody>
             @foreach (var item in items)
             {
+                string url = "/img/" + @item.Item.ImageName;
                 <tr>
+                    <td width="120px"><img src=@url width="100px" alt="..."></td>
                     <td>@item.Item.Name</td>
-                    <td>@item.Count</td>
-                    <td>@item.PricePerEach</td>
+                    <td>@item.Count x @item.PricePerEach</td>
                     <td>@(item.PricePerEach * item.Count)</td>
                 </tr>
             }

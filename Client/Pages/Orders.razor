@@ -3,7 +3,7 @@
 @inject IShopService Shop
 @inject NavigationManager NavigationManager
 
-<h3>Orders</h3>
+<h3>Złożone zamówienia</h3>
 
 @if (Shop.Orders == null)
 {
@@ -13,11 +13,11 @@
 }
 else
 {
-    <table class="table">
+    <table class="table table-borderless">
         <thead>
             <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Price total</th>
+                <th scope="col">Data: </th>
+                <th scope="col">Suma: </th>
             </tr>
         </thead>
         <tbody>
@@ -26,7 +26,7 @@ else
                 <tr>
                     <td>@item.Date</td>
                     <td>@item.PriceTotal</td>
-                    <td><button class="btn btn-success" @onclick='() => NavigationManager.NavigateTo($"/order/{item.Id}")'>Details</button></td>
+                    <td><button class="btn btn-warning" @onclick='() => NavigationManager.NavigateTo($"/order/{item.Id}")'>Szczegóły zamówienia</button></td>
                 </tr>
             }
 

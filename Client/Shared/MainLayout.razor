@@ -7,7 +7,7 @@
         <div>
             <AuthorizeView>
                 <Authorized>
-                    <WalletStatus Message="Your bank balance is"></WalletStatus>
+                    <WalletStatus Message="Saldo: "></WalletStatus>
                 </Authorized>
             </AuthorizeView>
         </div>
@@ -24,8 +24,19 @@
                 @Body
             </div>
         </div>
+
     </div>
-    
+    <div class="card-footer">
+        <AuthorizeView>
+            <Authorized>
+                <NavLink class="nav-link" href="fault">
+                    <span class="oi oi-bug" aria-hidden="true"></span> Zgłoś problem
+                </NavLink>
+            </Authorized>
+        </AuthorizeView>
+
+    </div>
+
 </div>
 
 <BlazoredToasts Position="ToastPosition.TopLeft" />

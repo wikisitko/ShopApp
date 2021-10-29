@@ -11,7 +11,7 @@ namespace BlazorShoppingApp.Shared
     {
         [EmailAddress, Required]
         public string Email { get; set; }
-        [StringLength(10, ErrorMessage = "Username is too long"), Required]
+        [StringLength(12, ErrorMessage = "Login jest zbyt długi"), Required]
         public string Username { get; set; }
         [Required, StringLength(200, MinimumLength = 10)]
         public string Description { get; set; }
@@ -19,7 +19,7 @@ namespace BlazorShoppingApp.Shared
         public int Priority { get; set; }
         public DateTime DateOfFault { get; set; }
         public int Type { get; set; }
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You have to confirm the rules!")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Potwierdź swój wiek")]
         public bool Confirmation { get; set; }
     }
 }

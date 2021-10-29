@@ -5,7 +5,7 @@
 @attribute [Authorize]
 
 
-<h3>Shop now!</h3>
+<h3></h3>
 
 
 @if (Shop.Items.Count == 0)
@@ -61,7 +61,7 @@ else
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Price zł</p>
-                    <button @onclick="() => Kup(item)" class="btn btn-success">Buy</button>
+                    <button @onclick="() => Kup(item)" class="btn btn-success">Dodaj do koszyka!</button>
                 </div>
                 <br />
                 <br />

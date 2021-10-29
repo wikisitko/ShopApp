@@ -49,14 +49,14 @@ else
             <InputDate id="dateOfBirth" @bind-Value="user.DateOfBirth" class="form-control"></InputDate>
         </div>
         @*<div class="form-group">
-                <label for="gender">Gender</label>
-                <InputSelect id="gender" @bind-Value="user.Gender" class="form-control">
-                    @for (int i = 0; i < GenderList.Count; i++)
-                        {
-                        <option value="@i">@GenderList[i]</option>
-                        }
-                </InputSelect>
-            </div>*@
+            <label for="gender">Gender</label>
+            <InputSelect id="gender" @bind-Value="user.Gender" class="form-control">
+                @for (int i = 0; i < GenderList.Count; i++)
+                    {
+                    <option value="@i">@GenderList[i]</option>
+                    }
+            </InputSelect>
+        </div>*@
         <div class="form-group">
             <label for="gender">Gender</label><br />
             <InputRadioGroup id="gender" @bind-Value="user.Gender" class="form-control">
@@ -67,9 +67,9 @@ else
                     }
             </InputRadioGroup>
         </div>
-        <div class="form-check">
-            <label for="confirmation" class="form-check-label">Potwierdzam regulamin</label>
+        <div class="form-group form-check">
             <InputCheckbox id="confirmation" @bind-Value="user.Confirmation" class="form-check-input"></InputCheckbox>
+            <label for="confirmation" class="form-check-label">Potwierdzam zapoznanie się z regulaminem.</label>
             <ValidationMessage For="@(() => user.Confirmation)"></ValidationMessage>
         </div>
         <button type="submit" class="btn btn-success">Go!</button>
@@ -80,15 +80,14 @@ else
 
 @code {
     private readonly IReadOnlyList<string> GenderList = new List<string>() { "Male", "Female", "Idk" };
-    private UserRegistration user = new UserRegistration(); //czy tutaj tez moze byc user skoro w Login.razor tez jest user?
+    private UserRegistration user = new UserRegistration();
     private bool registrated = false;
 
-    private async void OnSubmitRegistration() //czemu to sie tak nazywa:-(
+    private async void OnSubmitRegistration() 
     {
         var result = await AuthService.Register(user);
         if(result.Success)
         {
-            //Toast.ShowSuccess("Registrated!", "Success!");
             registrated = true;
             NavigationManager.NavigateTo("login");
         }

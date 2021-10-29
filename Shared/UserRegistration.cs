@@ -11,18 +11,18 @@ namespace BlazorShoppingApp.Shared
     {
         [EmailAddress , Required(ErrorMessage = "Email wymagany")]
         public string Email { get; set; }
-        [StringLength(10, ErrorMessage = "Username is too long"), Required]
+        [StringLength(12, ErrorMessage = "Login jest zbyt długi"), Required]
         public string Username { get; set; }
         [Required, StringLength(10, MinimumLength = 4)]
         public string Password { get; set; }
-        [Required, Compare("Password", ErrorMessage = "Passwords are not the same.")]
+        [Required, Compare("Password", ErrorMessage = "Hasła nie sa takie same")]
         public string PasswordConfirm { get; set; }
         public string Description { get; set; }
         [Range(0, 10000)]
         public int Money { get; set; }
         public DateTime DateOfBirth { get; set; }
         public int Gender { get; set; }
-        [Range(typeof(bool), "true", "true", ErrorMessage = "You have to confirm the rules!")]
+        [Range(typeof(bool), "true", "true", ErrorMessage = "Zatwierdź regulamin")]
         public bool Confirmation { get; set; }
     }
 }
