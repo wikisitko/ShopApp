@@ -27,7 +27,7 @@
                 <td>@item.Count</td>
                 <td>@item.PricePerEach</td>
                 <td>@(item.PricePerEach * item.Count)</td>
-                <td><button class="oi oi-delete" @onclick="() => Shop.OrderItems.Remove(item)"></button></td>
+                <td><button class="btn btn-danger" @onclick="() => Shop.OrderItems.Remove(item)">🗙</button></td>
             </tr>
         }
 
