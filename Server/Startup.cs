@@ -9,7 +9,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
+using System;
 using System.Linq;
+
+
 
 namespace BlazorShoppingApp.Server
 {
@@ -26,7 +30,9 @@ namespace BlazorShoppingApp.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+            //services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+
+            services.AddDbContext<DataContext>(options => options.UseNpgsql(_getConnectionString(Configuration.GetConnectionString("PgConnection"))));
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<IAuthRepository, AuthRepository>();
@@ -45,8 +51,10 @@ namespace BlazorShoppingApp.Server
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, DataContext dataContext)
         {
+            dataContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -77,6 +85,28 @@ namespace BlazorShoppingApp.Server
                 endpoints.MapControllers();
                 endpoints.MapFallbackToFile("index.html");
             });
+        }
+
+        private string _getConnectionString(string herokuConnectionString)
+        {
+   
+            if (string.IsNullOrEmpty(herokuConnectionString)) return null;
+
+            var databaseUri = new Uri(herokuConnectionString);
+            var userInfo = databaseUri.UserInfo.Split(':');
+
+            var builder = new NpgsqlConnectionStringBuilder
+            {
+                Host = databaseUri.Host,
+                Port = databaseUri.Port,
+                Username = userInfo[0],
+                Password = userInfo[1],
+                Database = databaseUri.LocalPath.TrimStart('/'),
+                SslMode = SslMode.Require,
+                TrustServerCertificate = true
+            };
+
+            return builder.ToString();
         }
     }
 }
