@@ -20,7 +20,7 @@ namespace BlazorShoppingApp.Shared
         public string Description { get; set; }
         [Range(0, 10000)]
         public int Money { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; } = DateTime.Now;
         public int Gender { get; set; }
         [Range(typeof(bool), "true", "true", ErrorMessage = "Zatwierdź regulamin")]
         public bool Confirmation { get; set; }
