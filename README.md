@@ -4,7 +4,7 @@
 The plants’ power is a project which simulates a flower shop. After the registration user gets money and can buy plants. Application allows users to add items to the basket and then raise an order. Application is being developed. 
 
 ##Technologies: 
-ASP.NET Core Blazor 
+ASP.NET Core Blazor, 
 Bootstrap 4.3.1
 
 ##Setup:
